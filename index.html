@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Rooms</title>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io/dist/socket.io.min.js"></script>
+    <script>
+        function joinRoom() {
+            const username = document.getElementById('username').value;
+            const room = document.getElementById('room').value;
+            if (username && room) {
+                window.location.href = `/chat/${room}?username=${username}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Join a Chat Room</h1>
+    <input id="username" type="text" placeholder="Enter your username">
+    <input id="room" type="text" placeholder="Enter room name">
+    <button onclick="joinRoom()">Join</button>
+</body>
+</html>
