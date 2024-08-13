@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room</title>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io/dist/socket.io.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = io();
+            const room = '{{ room }}';
+            const username = new URLSearchParams(window.location.search).get('username');
+
+            socket.emit('join', { username, room });
+
+            socket.on('message', data => {
+                const messages = document.getElementById('messages');
+                const item = document.createElement('li');
+                item.textContent = data.msg;
+                messages.appendChild(item);
+            });
+
+            document.getElementById('sendMessage').addEventListener('click', () => {
+                const msg = document.getElementById('messageInput').value;
+                socket.emit('message', { room, msg });
+                document.getElementById('messageInput').value = '';
+            });
+
+            document.getElementById('leaveRoom').addEventListener('click', () => {
+                socket.emit('leave', { username, room });
+                window.location.href = '/';
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Chat Room: {{ room }}</h1>
+    <ul id="messages"></ul>
+    <input id="messageInput" type="text" placeholder="Type a message">
+    <button id="sendMessage">Send</button>
+    <button id="leaveRoom">Leave Room</button>
+</body>
+</html>
